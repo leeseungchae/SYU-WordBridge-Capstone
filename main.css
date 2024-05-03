@@ -1,0 +1,168 @@
+/* 구글폰트 */
+/*  */
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
+/* Black Han Sans */
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Madimi+One&display=swap');
+body {
+  /* 구글폰트 */
+  font-family: "Madimi One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.nav {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+}
+/* .nav img {
+  background-size: cover;
+  background-color: antiquewhite;
+} */
+
+.grey-bg {
+    background: #eee;
+  }
+  .white-bg {
+    background: white;
+    margin: 20px;
+    border-radius: 5px;
+  }
+  .list-box {
+    margin-top: 10px;
+    border: 2px solid gray;
+    border-radius: 15px;
+    padding : 10px;
+    box-shadow: 5px 5px 5px gray;
+  }
+  .list-box h4{
+    font-size: 16px;
+    margin: 5px;
+  }
+  .list-box p {
+    font-size: 13px;
+    margin: 5px;
+    color: grey;
+
+    /* 말줄임표로 바꾸기 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+/* --------------write.ejs, edit.ejs css 코드 --------------*/
+  input, textarea {
+    box-sizing: border-box;
+  }
+  .form-box {
+    background: white;
+    padding: 25px;
+    margin: 20px;
+    border-radius: 8px;
+  }
+  .form-box input, .form-box textarea {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .form-box button {
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+    border: none;
+    background: #0077E5;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+/* --------------write.ejs, edit.ejs css--------------- */
+
+/* detail.ejs css //게시글 상세 페이지 */
+  .detail-bg {
+    background: #eee;
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+
+a {
+  text-decoration: none;
+}
+a:link {
+  color: black;
+}
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  color: blue;
+  font-weight: bold;
+}
+
+.delete:hover {
+  border: 1px solid black;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+
+}
+.nav h1 {
+    font-size: 60px;
+    background: linear-gradient(to right top, #5B93FF, #B84CFA);
+    color: transparent;
+    -webkit-background-clip: text;
+    text-align: center;
+}
+
+
+.write {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  font-weight: bold;
+  border: 3px solid black;
+  border-radius: 20px;
+  padding: 5px;
+  background-color: #5B93FF;
+
+  text-align: center;
+  font-size: 25px;
+}
+
+.nav-bottom {
+  width: 100%;
+  height: 90px;
+  background-color: #eee;
+
+  position: fixed;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-box {
+  width: 70px;
+  height: 70px;
+  margin: 50px;
+  text-align: center;
+  font-size: 50px;
+}
+
+.user__search_input {
+  margin-left: 20px;
+  padding: 5px;
+}
+.search {
+  padding: 6px 10px;
+  background: lightgray;
+  border: none;
+  border-radius: 5px;
+  vertical-align: middle;
+} 
