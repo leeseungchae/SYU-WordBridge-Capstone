@@ -1,23 +1,45 @@
 import json
 import pandas as pd
-from datasets import Dataset
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments,BitsAndBytesConfig
+from torch.utils.data import Dataset
+from transformers import (AutoTokenizer, AutoModelForSeq2SeqLM, DataCollatorForSeq2Seq, 
+                          Seq2SeqTrainer, Seq2SeqTrainingArguments,BitsAndBytesConfig)
 from peft import LoraConfig, get_peft_model, TaskType
 import wandb
 
 wandb.login()
 
-# 모델 및 토크나이저 로드
-teacher_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-1.3B")
-# model = AutoModelForSeq2SeqLM.from_pretrained('dhtocks/nllb-200-distilled-350M_en-ko', forced_bos_token_id=256098)
-tokenizer = AutoTokenizer.from_pretrained('dhtocks/nllb-200-distilled-350M_en-ko', src_lang='eng_Latn', tgt_lang='kor_Hang')
+# 데이터셋 클래스 정의
+class TranslationDataset(Dataset):
+    def __init__(self, file_path, tokenizer, src_lang='en', tgt_lang='ko', max_length=128):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)['data']
+        
+        self.data = data
+        self.tokenizer = tokenizer
+        self.src_lang = src_lang
+        self.tgt_lang = tgt_lang
+        self.max_length = max_length
 
-# model = AutoModelForSeq2SeqLM.from_pretrained('dhtocks/nllb-200-distilled-350M_en-ko', load_in_4bit=True, device_map="auto", quantization_config={
-#     "load_in_4bit": True,
-#     "bnb_4bit_compute_dtype": "float16",  # 'float16' or 'bfloat16'
-#     "bnb_4bit_use_double_quant": True,
-#     "bnb_4bit_quant_type": "nf4"  # NormalFloat4
-# })
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        item = self.data[idx]
+        source_text = item['en']
+        target_text = item['ko']
+
+        source_encoding = self.tokenizer(source_text, max_length=self.max_length, truncation=True, padding='max_length', return_tensors='pt')
+        target_encoding = self.tokenizer(target_text, max_length=self.max_length, truncation=True, padding='max_length', return_tensors='pt')
+
+        return {
+            'input_ids': source_encoding['input_ids'].flatten(),
+            'attention_mask': source_encoding['attention_mask'].flatten(),
+            'labels': target_encoding['input_ids'].flatten()
+        }
+
+# NLLB 모델 및 토크나이저 로드
+model_name = 'facebook/nllb-200-distilled-600M'
+tokenizer = AutoTokenizer.from_pretrained(model_name, src_lang='eng_Latn', tgt_lang='kor_Hang')
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -27,12 +49,10 @@ bnb_config = BitsAndBytesConfig(
 )
 
 model = AutoModelForSeq2SeqLM.from_pretrained(
-    'dhtocks/nllb-200-distilled-350M_en-ko',
+    'facebook/nllb-200-distilled-600M',
     quantization_config=bnb_config,
-    device_map="auto"
+    device_map="auto",
 )
-
-
 
 lora_config = LoraConfig(
     r=8,
@@ -60,58 +80,27 @@ lora_config = LoraConfig(
     task_type=TaskType.SEQ_2_SEQ_LM
 )
 
+
 # QLoRA 적용된 모델 생성
 model = get_peft_model(model, lora_config)
 
-# Forced BOS 토큰 설정
-teacher_model.config.forced_bos_token_id = 256098
-model.config.forced_bos_token_id = 256098
+# 데이터셋 로드
+train_dataset = TranslationDataset('./data/train.json', tokenizer)
+val_dataset = TranslationDataset('./data/validation.json', tokenizer)
+
+
+# 데이터 콜레이터 정의
+data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
 
 # 파라미터 수 출력
 print(f"Model number of parameters: {model.num_parameters()}")
 
 
-import json
-from datasets import Dataset
-
-# JSON 파일 읽기
-with open("data/train.json", "r", encoding="utf-8") as f:
-    data = json.load(f)
-
-# 필요한 필드만 추출해 Dataset 객체로 변환
-examples = [{"source_text": item["en"], "target_text": item["ko"]} for item in data["data"]]
-dataset = Dataset.from_pandas(pd.DataFrame(examples))
-
-# 데이터셋 분할 (예시: 90% 학습, 10% 평가)
-train_test_split = dataset.train_test_split(test_size=0.1)
-train_dataset = train_test_split["train"]
-eval_dataset = train_test_split["test"]
-
-# 데이터 전처리 함수
-def preprocess_function(examples):
-    inputs = [ex for ex in examples["source_text"]]
-    targets = [ex for ex in examples["target_text"]]
-    model_inputs = tokenizer(inputs, max_length=128, truncation=True, padding="max_length")
-    with tokenizer.as_target_tokenizer():
-        labels = tokenizer(targets, max_length=128, truncation=True, padding="max_length")
-
-    model_inputs["labels"] = labels["input_ids"]
-    return model_inputs
-    
-# 데이터셋에 전처리 함수 적용
-train_dataset = train_dataset.map(preprocess_function, batched=True)
-eval_dataset = eval_dataset.map(preprocess_function, batched=True)
-
-# 필요하지 않은 컬럼 제거
-train_dataset = train_dataset.remove_columns(["source_text", "target_text"])
-eval_dataset = eval_dataset.remove_columns(["source_text", "target_text"])
-
-
 # 파인튜닝 설정
 training_args = Seq2SeqTrainingArguments(
-    output_dir="./nllb_350M",
-    num_train_epochs=3,
-    per_device_train_batch_size=24,  # GPU 당 배치 크기
+    output_dir="./nllb-200-distilled-600M_finetuned",
+    num_train_epochs=1,
+    per_device_train_batch_size=16,  # GPU 당 배치 크기
     gradient_accumulation_steps=2,  # 그래디언트 누적 단계
     warmup_ratio=0.1,
     learning_rate=5e-5,
@@ -136,8 +125,9 @@ trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
+    eval_dataset=val_dataset,
     tokenizer=tokenizer,
+    data_collator=data_collator
 )
 
 # 파인튜닝 실행
