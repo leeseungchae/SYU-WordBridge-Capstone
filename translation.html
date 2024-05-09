@@ -26,7 +26,7 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#" id="featuresBtn">번역기록</a>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Pricing</a>
@@ -39,6 +39,21 @@
     </div>
   </nav>
   
+  <!-- 모달창 -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>번역 기록</h2>
+      <ul id="translationHistory">
+        <!-- 여기에 번역기록 추가 -->
+        <li>안녕하세요. → en: Hello.</li>
+        <li>저는 학생입니다. → en: I am a student.</li>
+        <li>오늘 날씨가 좋네요. → en: The weather is nice today.</li>
+        <li>점심 무엇을 드시겠습니까? → en: What would you like for lunch?</li>
+        <li>이것은 책상입니다. → en: This is a desk.</li>
+      </ul>
+    </div>
+  </div>
 
   <br><br><br>
   <div class="container flex-row test-bg">
@@ -99,6 +114,35 @@
 
   <!-- javascript -->
   <script>
+    // 모달창 열기/닫기 기능
+    var modal = document.getElementById("myModal");
+    var featuresBtn = document.getElementById("featuresBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    featuresBtn.onclick = function() {
+      modal.style.display = "block"; 
+      modal.classList.add("show");
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none"; 
+      modal.classList.remove("show");
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // 번역 기록 추가 함수
+    function addTranslationHistory(source, target, translation) {
+      var historyList = document.getElementById("translationHistory");
+      var listItem = document.createElement("li");
+      listItem.textContent = `${source} → ${target}: ${translation}`;
+      historyList.appendChild(listItem);
+    }
+
     // -------------------글자 수 세기-------------------
     const textarea1 = document.getElementById('floatingTextarea1');
     const charCount1 = document.getElementById('charCount1');
@@ -182,6 +226,9 @@
     const translatedText = await translateText(userInput, 'en'); // 한국어에서 영어로 번역, 일본어:ja, 중국어:zh 다른 언어 참조:https://ko.wikipedia.org/wiki/ISO_639-1_%EC%BD%94%EB%93%9C_%EB%AA%A9%EB%A1%9D
     const textarea2 = document.getElementById('floatingTextarea2');
     textarea2.value = translatedText;
+
+    // 번역 기록 추가
+    addTranslationHistory('ko', targetLanguage, translatedText);
   });
 
   </script>
