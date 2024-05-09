@@ -28,6 +28,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" id="featuresBtn">번역기록</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="logoutBtn">로그아웃</a>
+          </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="#">Pricing</a>
           </li> -->
@@ -231,6 +234,55 @@
     addTranslationHistory('ko', targetLanguage, translatedText);
   });
 
+
+
+
+  // 로그아웃 버튼 클릭 이벤트 처리
+  const logoutBtn = document.getElementById('logoutBtn');
+  logoutBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 동작 취소
+
+    // 서버로 로그아웃 요청 보내기
+    logout();
+  });
+
+  // 로그아웃 함수
+  function logout() {
+    // 실제 API 호출 전에는 모의 데이터를 사용하여 테스트
+    const mockResponse = {
+      success: true,
+      message: '로그아웃 성공'
+    };
+
+    if (mockResponse.success) {
+      alert(mockResponse.message);
+      // 로그아웃 성공 후 로그인 페이지로 이동
+      window.location.href = 'login.html'; // 로그아웃 성공 시 login.html로 이동
+    } else {
+      alert('로그아웃 실패'); // 로그아웃 실패 시 메시지 출력
+    }
+
+    // 실제 API 호출 예시 (추후 연동 시 사용)
+    /*
+    fetch('/api/logout/', {
+      method: 'POST'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          // 로그아웃 성공 후 로그인 페이지로 이동
+          window.location.href = 'login.html';
+        } else {
+          alert('로그아웃 실패');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('로그아웃 중 오류가 발생했습니다.');
+      });
+    */
+  }
   </script>
 </body>
 </html>
