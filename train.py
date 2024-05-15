@@ -10,11 +10,11 @@ wandb.login()
 
 # NLLB 모델 및 토크나이저 로드
 model_name = 'facebook/nllb-200-distilled-600M'
-tokenizer = AutoTokenizer.from_pretrained(model_name, src_lang='eng_Latn', tgt_lang='kor_Hang')
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
-    bnb_4bit_compute_dtype="float16",  # 'float16' or 'bfloat16'
+    bnb_4bit_compute_dtype="bfloat16",  # 'float16' or 'bfloat16'
     bnb_4bit_use_double_quant=True,
     bnb_4bit_quant_type="nf4"  # NormalFloat4
 )
@@ -35,17 +35,19 @@ lora_config = LoraConfig(
     task_type=TaskType.SEQ_2_SEQ_LM
 )
 
-target_modules = get_target_modules(model)
-
 # QLoRA 적용된 모델 생성
 model = get_peft_model(model, lora_config)
 
 train_data_path = './data/train.json'
-validation_dath_path = './data/validation.json'
+validation_dath_path = './data/valid.json'
 
 # 데이터셋 로드
-train_dataset = TranslationDataset(train_data_path, tokenizer)
-val_dataset = TranslationDataset(validation_dath_path, tokenizer)
+src_lang = 'ko'
+tgt_lang = 'en'
+
+
+train_dataset = TranslationDataset(train_data_path, tokenizer,src_lang=src_lang,tgt_lang=tgt_lang)
+val_dataset = TranslationDataset(validation_dath_path, tokenizer,src_lang=src_lang,tgt_lang=tgt_lang)
 
 
 # 데이터 콜레이터 정의
@@ -59,7 +61,7 @@ print(f"Model number of parameters: {model.num_parameters()}")
 training_args = Seq2SeqTrainingArguments(
     output_dir="./nllb-200-distilled-600M_finetuned",
     num_train_epochs=5,
-    per_device_train_batch_size=16,  # GPU 당 배치 크기
+    per_device_train_batch_size=8,  # GPU 당 배치 크기
     gradient_accumulation_steps=1,  # 그래디언트 누적 단계
     warmup_ratio=0.1,
     learning_rate=5e-5,
@@ -69,7 +71,7 @@ training_args = Seq2SeqTrainingArguments(
     eval_steps=1000,
     max_grad_norm=1.0,
     save_steps=1000,
-    fp16=True,
+    bf16=True,
     lr_scheduler_type="cosine",
     optim="adamw_torch",
     save_total_limit=3,

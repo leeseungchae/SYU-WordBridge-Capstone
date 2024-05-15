@@ -1,79 +1,82 @@
-accelerate==0.30.0
-aiohttp==3.9.5
-aiosignal==1.3.1
-appdirs==1.4.4
-async-timeout==4.0.3
-attrs==23.2.0
-bitsandbytes==0.43.1
-Brotli @ file:///croot/brotli-split_1714483155106/work
-certifi @ file:///croot/certifi_1707229174982/work/certifi
-chardet==5.2.0
-charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
-click==8.1.7
-datasets==2.19.0
-dill==0.3.8
-docker-pycreds==0.4.0
-filelock @ file:///croot/filelock_1700591183607/work
-frozenlist==1.4.1
-fsspec==2024.3.1
-gitdb==4.0.11
-GitPython==3.1.43
-gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645438755360/work
-huggingface==0.0.1
-huggingface-hub==0.23.0
-idna @ file:///croot/idna_1714398848350/work
-Jinja2 @ file:///croot/jinja2_1706733616596/work
-MarkupSafe @ file:///croot/markupsafe_1704205993651/work
-mkl-fft @ file:///croot/mkl_fft_1695058164594/work
-mkl-random @ file:///croot/mkl_random_1695059800811/work
-mkl-service==2.4.0
-mpmath @ file:///croot/mpmath_1690848262763/work
-multidict==6.0.5
-multiprocess==0.70.16
-networkx @ file:///croot/networkx_1690561992265/work
-numpy @ file:///croot/numpy_and_numpy_base_1708638617955/work/dist/numpy-1.26.4-cp39-cp39-linux_x86_64.whl#sha256=6094eeedd869502faa0fd0a8c5ad3a70c5779be06ddd1feb7627e5c212fac420
-nvidia-cublas-cu12==12.1.3.1
-nvidia-cuda-cupti-cu12==12.1.105
-nvidia-cuda-nvrtc-cu12==12.1.105
-nvidia-cuda-runtime-cu12==12.1.105
-nvidia-cudnn-cu12==8.9.2.26
-nvidia-cufft-cu12==11.0.2.54
-nvidia-curand-cu12==10.3.2.106
-nvidia-cusolver-cu12==11.4.5.107
-nvidia-cusparse-cu12==12.1.0.106
-nvidia-nccl-cu12==2.20.5
-nvidia-nvjitlink-cu12==12.4.127
-nvidia-nvtx-cu12==12.1.105
-packaging==24.0
-pandas==2.2.2
-peft==0.10.0
-pillow @ file:///croot/pillow_1714398848491/work
-protobuf==4.25.3
-psutil==5.9.8
-pyarrow==16.0.0
-pyarrow-hotfix==0.6
-PySocks @ file:///tmp/build/80754af9/pysocks_1605305812635/work
-python-dateutil==2.9.0.post0
-pytz==2024.1
-PyYAML @ file:///croot/pyyaml_1698096049011/work
-regex==2024.4.28
-requests @ file:///croot/requests_1707355572290/work
-safetensors==0.4.3
-sentry-sdk==2.0.1
-setproctitle==1.3.3
-six==1.16.0
-smmap==5.0.1
-sympy @ file:///croot/sympy_1701397643339/work
-tokenizers==0.19.1
-torch==2.2.2
-torchaudio==2.2.2
-torchvision==0.17.2
-tqdm==4.66.4
-transformers==4.40.1
-triton==2.2.0
-typing_extensions==4.11.0
-tzdata==2024.1
-urllib3 @ file:///croot/urllib3_1707770551213/work
-wandb==0.16.6
-xxhash==3.4.1
-yarl==1.9.4
+accelerate 0.30.0
+aiohttp 3.9.5
+aiosignal 1.3.1
+appdirs 1.4.4
+async-timeout 4.0.3
+attrs 23.2.0
+bitsandbytes 0.43.1
+Brotli 1.0.9
+certifi 2024.2.2
+chardet 5.2.0
+charset-normalizer 2.0.4
+click 8.1.7
+datasets 2.19.0
+dill 0.3.8
+docker-pycreds 0.4.0
+filelock 3.13.1
+frozenlist 1.4.1
+fsspec 2024.3.1
+gitdb 4.0.11
+GitPython 3.1.43
+gmpy2 2.1.2
+huggingface 0.0.1
+huggingface-hub 0.23.0
+idna 3.7
+Jinja2 3.1.3
+MarkupSafe 2.1.3
+mkl-fft 1.3.8
+mkl-random 1.2.4
+mkl-service 2.4.0
+mpmath 1.3.0
+multidict 6.0.5
+multiprocess 0.70.16
+networkx 3.1
+numpy 1.26.4
+nvidia-cublas-cu12 12.1.3.1
+nvidia-cuda-cupti-cu12 12.1.105
+nvidia-cuda-nvrtc-cu12 12.1.105
+nvidia-cuda-runtime-cu12 12.1.105
+nvidia-cudnn-cu12 8.9.2.26
+nvidia-cufft-cu12 11.0.2.54
+nvidia-curand-cu12 10.3.2.106
+nvidia-cusolver-cu12 11.4.5.107
+nvidia-cusparse-cu12 12.1.0.106
+nvidia-nccl-cu12 2.20.5
+nvidia-nvjitlink-cu12 12.4.127
+nvidia-nvtx-cu12 12.1.105
+packaging 24.0
+pandas 2.2.2
+peft 0.10.0
+pillow 10.3.0
+pip 23.3.1
+protobuf 4.25.3
+psutil 5.9.8
+pyarrow 16.0.0
+pyarrow-hotfix 0.6
+PySocks 1.7.1
+python-dateutil 2.9.0.post0
+pytz 2024.1
+PyYAML 6.0.1
+regex 2024.4.28
+requests 2.31.0
+safetensors 0.4.3
+sentry-sdk 2.0.1
+setproctitle 1.3.3
+setuptools 68.2.2
+six 1.16.0
+smmap 5.0.1
+sympy 1.12
+tokenizers 0.19.1
+torch 2.2.2
+torchaudio 2.2.2
+torchvision 0.17.2
+tqdm 4.66.4
+transformers 4.40.1
+triton 2.2.0
+typing_extensions 4.11.0
+tzdata 2024.1
+urllib3 2.1.0
+wandb 0.16.6
+wheel 0.43.0
+xxhash 3.4.1
+yarl 1.9.4

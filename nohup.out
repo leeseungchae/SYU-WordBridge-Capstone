@@ -1,0 +1,8 @@
+python: can't open file '/home/readeogpu/Workspace/SYU-WordBridge-Capstone/your_script.py': [Errno 2] No such file or directory
+python: can't open file '/home/readeogpu/Workspace/SYU-WordBridge-Capstone/train.py.py': [Errno 2] No such file or directory
+wandb: Currently logged in as: steve_lee (aitok). Use `wandb login --relogin` to force relogin
+/home/readeogpu/anaconda3/envs/wordbridge/lib/python3.9/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+wandb: Currently logged in as: steve_lee (aitok). Use `wandb login --relogin` to force relogin
+/home/readeogpu/anaconda3/envs/wordbridge/lib/python3.9/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
