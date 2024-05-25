@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Single+Day&display=swap');
+
+.flex-row {
+  display: flex;
+}
+.nav {
+  border-bottom: 1px solid black;
+  font-family: "Single Day", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+.w-50 {
+  width: 50%;
+}
+.m-10 {
+  margin: 10px;
+}
+#floatingTextarea2 {
+  background-color: #eee;
+}
+.test-bg{
+  /* background-color: bisque; */
+}
+#charCount1 {
+  position: absolute;
+  right: 0px;
+  margin-top: 10px;
+}
+.volume-start{
+  display: none;
+}
