@@ -2,48 +2,36 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.http import JsonResponse
-from .models import Translation
+from .models import Translation, User
 import googletrans
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
-        # POST 요청으로부터 사용자 정보 가져오기
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        json_data = json.loads(request.body)
+     # 사용자 이름과 이메일 중복 확인
+        user = User.objects.create(username=json_data['userId'], password=json_data['password'])
+        user.save()
 
-        # 사용자 이름과 이메일 중복 확인
-        if User.objects.filter(username=username).exists():
-            return JsonResponse({'message': 'Username already exists'}, status=409)
-        if User.objects.filter(email=email).exists():
-            return JsonResponse({'message': 'Email already exists'}, status=409)
-
-        # 새로운 사용자 생성 및 로그인
-        user = User.objects.create_user(username=username, email=email, password=password)
-        login(request, user)
         return JsonResponse({'message': 'User registered successfully'}, status=201)
 
     return render(request, 'register.html')
 
 
-def logout_view(request):
-    # 사용자 로그아웃
-    logout(request)
-    return JsonResponse({'message': 'Logout successful'}, status=204)
+def login_page(request):
 
-
+    return render(request, 'login.html')
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        # POST 요청으로부터 사용자 정보 가져오기
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # 사용자 인증
-        user = authenticate(request, username=username, password=password)
-
+        json_data = json.loads(request.body)
+        if json_data.get('userId')is None:
+            return JsonResponse({'message': 'Invalid credentials'}, status=401)
+        user = authenticate(request, username=json_data['userId'], password=json_data['password'])
+        print(user)
         if user is not None:
             # 인증 성공 시 로그인 및 성공 메시지 반환
             login(request, user)
@@ -54,17 +42,15 @@ def login_view(request):
 
     return render(request, 'login.html')
 
-
-def check_email(request):
-    if request.method == 'POST':
-        # POST 요청으로부터 이메일 주소 가져오기
-        email = request.POST.get('email')
-
-        # 이메일 중복 확인
-        if User.objects.filter(email=email).exists():
+@csrf_exempt
+def check_email(request, userId):
+    if request.method == 'GET':
+        if User.objects.filter(username=userId).exists():
             return JsonResponse({'message': 'Email already in use'}, status=409)
-        return JsonResponse({'message': 'Email available'}, status=200)
-
+        else:
+            return JsonResponse({'message': 'Email available'}, status=200)
+    else:
+        return JsonResponse({'message': 'Invalid credentials'}, status=401)
 
 @login_required
 def history(request):

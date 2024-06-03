@@ -16,9 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from translator.views import check_email,register,login_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', TemplateView.as_view(template_name='translation.html'), name='main'),
-    path('', include('translator.urls')),
+    path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
+    path('api/login/', login_view, name='login'),
+    path('', include('translator.urls'),name='translator'),
+    path('api/check-userId/<str:userId>/', check_email),
+    path('api/register/', register, name='register'),
 ]

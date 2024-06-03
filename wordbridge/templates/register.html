@@ -36,7 +36,7 @@
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" class="form-control" id="password">
           </div>
-          <div class="mb-3">
+          <div class="mb-3">`
             <label for="confirmPassword" class="form-label">비밀번호 확인</label>
             <input type="password" class="form-control" id="confirmPassword">
           </div>
@@ -53,33 +53,34 @@
     // 중복 아이디 검사 함수
     function checkDuplicateUsername(userId) {
     // 실제 API 호출 전에는 모의 데이터를 사용하여 테스트
-    const mockResponse = {
-        is_available: userId !== 'existinguser',
-        error: userId === 'existinguser' ? '이미 사용 중인 아이디입니다.' : null
-    };
-    
-    if (mockResponse.is_available) {
-        alert('사용 가능한 아이디입니다.');
-    } else {
-        alert(mockResponse.error);
-    }
+    // const mockResponse = {
+    //     is_available: userId !== 'existinguser',
+    //     error: userId === 'existinguser' ? '이미 사용 중인 아이디입니다.' : null
+    // };
+    //
+    // if (mockResponse.is_available) {
+    //     alert('사용 가능한 아이디입니다.');
+    // } else {
+    //     alert(mockResponse.error);
+    // }
     
     // 실제 API 호출 예시 (추후 연동 시 사용)
-    /*
-    fetch(`/api/check-userId/?userId=${userId}`)
+
+    fetch(`/api/check-userId/${userId}`)
         .then(response => response.json())
         .then(data => {
-        if (data.is_available) {
+          console.log(data)
+        if (data.message == 'Email available') {
             alert('사용 가능한 아이디입니다.');
         } else {
-            alert(data.error);
+            alert(data.message);
         }
         })
         .catch(error => {
         console.error('Error:', error);
         alert('중복 검사 중 오류가 발생했습니다.');
         });
-    */
+
     }
 
     document.getElementById('checkDuplicateBtn').addEventListener('click', function() {
@@ -91,15 +92,14 @@
     // 회원가입 함수
     function registerUser(name, userId, password) {
     // 실제 API 호출 전에는 모의 데이터를 사용하여 테스트
-    const mockResponse = {
-        message: '회원가입이 완료되었습니다.'
-    };
-    
-    alert(mockResponse.message);
-    window.location.href = "signup.html";
-    
+    // const mockResponse = {
+    //     message: '회원가입이 완료되었습니다.'
+    // };
+    //
+    // alert(mockResponse.message);
+    // window.location.href = "signup.html";
+
     // 실제 API 호출 예시 (추후 연동 시 사용)
-    /*
     fetch('/api/register/', {
         method: 'POST',
         headers: {
@@ -124,7 +124,7 @@
         console.error('Error:', error);
         alert('회원가입 중 오류가 발생했습니다.');
         });
-    */
+
     }
 
     document.querySelector('form').addEventListener('submit', function(event) {

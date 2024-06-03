@@ -3,17 +3,19 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
+# 현재 시간 기반의 기본 username 설정
+default_username = timezone.now().strftime('%Y%m%d%H%M%S')
 
 # 유저 테이블, 번역 테이블 추가
 class User(models.Model):
-    name = models.CharField(max_length=100)
-    userid = models.OneToOneField(User, on_delete=models.CASCADE)
-    password = models.CharField(max_length=100)
-
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    password = models.CharField(max_length=100,default=None)
+    username = models.CharField(max_length=50, default=default_username)
 
     def __str__(self):
-        return self.userid
+        return self.username
 
 
 class Translation(models.Model):
