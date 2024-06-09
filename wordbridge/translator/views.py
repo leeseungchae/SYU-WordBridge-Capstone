@@ -20,18 +20,18 @@ def register(request):
 
     return render(request, 'register.html')
 
-
 def login_page(request):
-
     return render(request, 'login.html')
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-        if json_data.get('userId')is None:
-            return JsonResponse({'message': 'Invalid credentials'}, status=401)
-        user = authenticate(request, username=json_data['userId'], password=json_data['password'])
-        print(user)
+        # userId = json_data['userId']
+        if 'username' in json_data and 'password' in json_data:
+            userId = json_data['username']
+            password = json_data['password']
+
+        user = authenticate(request, username=userId, password=password)
         if user is not None:
             # 인증 성공 시 로그인 및 성공 메시지 반환
             login(request, user)
@@ -40,7 +40,10 @@ def login_view(request):
             # 인증 실패 시 실패 메시지 반환
             return JsonResponse({'message': 'Invalid credentials'}, status=401)
 
+    #return JsonResponse({'message': 'Invalid credentials'}, status=401)
     return render(request, 'login.html')
+
+
 
 @csrf_exempt
 def check_email(request, userId):

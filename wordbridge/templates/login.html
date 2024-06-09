@@ -29,7 +29,7 @@
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" class="form-control" id="password">
           </div>
-          <button type="submit" class="btn btn-primary w-100" onclick="redirectToLogin()">로그인</button>
+          <button type="submit" class="btn btn-primary w-100" onclick="login()">로그인</button>
         </form>
         <div class="text-center mt-3">
           <a href="{% url 'register' %}">회원가입</a>
@@ -39,75 +39,79 @@
   </div>
 
   <script>
-      
-      function redirectToLogin() {
-  window.location.href = "{% url 'login' %}";
-}
-    // 로그인 폼 제출 시 이벤트 핸들러
-    document.querySelector('form').addEventListener('submit', function(event) {
-      event.preventDefault();
-  
-      const userId = document.getElementById('userId').value;   // 사용자가 입력한 아이디
-      const password = document.getElementById('password').value;   // 사용자가 입력한 비밀번호
-  
-      // 입력값 유효성 검사
-      if (!userId || !password) {
-        alert('아이디과 비밀번호를 입력해주세요.');
-        return;
-      }
-  
-      // 로그인 요청 보내기
-      login(userId, password);
-    });
-  
+
+
     function login(userId, password) {
       // 실제 API 호출 전에는 모의 데이터를 사용하여 테스트
-      const mockResponse = {
-        success: true,
-        message: '로그인 성공',
-        user: {
-          name: 'John Doe',
-          userId: userId
-        }
-      };
-  
-      if (mockResponse.success) {
-        alert(mockResponse.message);
-        // 로그인 성공 후 다른 페이지로 이동하거나 추가 작업을 수행 가능
-        window.location.href = 'translation.html';  // 로그인 성공 시 translation.html로 이동
-      } else {
-        alert(mockResponse.message); // 로그인 실패 시 메시지 출력
-      }
-
-  
-      // 실제 API 호출 예시 (추후 연동 시 사용)
-      /*
       fetch('/api/login/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
         },
         body: JSON.stringify({
-          userId: userId,
+          // userId: userId,
+          username: userId,
           password: password
         })
       })
         .then(response => response.json())
         .then(data => {
-          if (data.success) {
+          console.log(data.message)
+          if (data.message == 'Login successful') {
             alert(data.message);
             // 로그인 성공 후 다른 페이지로 이동하거나 추가 작업을 수행 가능
-            window.location.href = 'signup.html'; // 로그인 성공 시 signup.html로 이동
+            window.location.href = 'translation.html'; // 로그인 성공 시 translation.html로 이동
           } else {
-            alert(data.message);
+            alert(data.message); // 로그인 실패 시 메시지 출력
           }
         })
         .catch(error => {
           console.error('Error:', error);
           alert('로그인 중 오류가 발생했습니다.');
         });
-      */
+``
+      // 실제 API 호출 예시 (추후 연동 시 사용)
+      /*/login/*/
     }
+
+
+      function redirectToLogin() {
+  window.location.href = "{% url 'login' %}";
+}
+    // 로그인 폼 제출 시 이벤트 핸들러
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const userId = document.getElementById('userId').value;   // 사용자가 입력한 아이디
+      const password = document.getElementById('password').value;   // 사용자가 입력한 비밀번호
+
+      // 입력값 유효성 검사
+      if (!userId || !password) {
+        alert('아이디과 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      // 로그인 요청 보내기
+      login(userId, password);
+    });
+
+    function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+
   </script>
 </body>
 </html>
