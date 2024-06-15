@@ -16,7 +16,7 @@
   <!-- 네비게이션바 -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary nav">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">에이아이톡</a>
+      <a class="navbar-brand" href="#">WordBridge</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -191,11 +191,11 @@
 
     //번역 AI 실험
     // Google Translate API 사용을 위한 API 키
-    const API_KEY = 'Goole_Translate_API_KEY'; 
+    const API_KEY = 'AIzaSyAprd80jOCBNiyMTi7kwUSFyonCCtp1abE';
 
 // 번역 함수
   async function translateText(text, targetLanguage) {
-    const url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`;
+    const url = "{% url 'translate' %}";
     const data = {
       q: text,
       target: targetLanguage,
@@ -215,7 +215,7 @@
       }
 
       const translatedData = await response.json();
-      return translatedData.data.translations[0].translatedText;
+      return translatedData.translated_text; //return translatedData.data.translations[0].translatedText;
     } catch (error) {
       console.error('Error translating text:', error);
       return null;
@@ -232,9 +232,10 @@
     const translatedText = await translateText(userInput, 'en'); // 한국어에서 영어로 번역, 일본어:ja, 중국어:zh 다른 언어 참조:https://ko.wikipedia.org/wiki/ISO_639-1_%EC%BD%94%EB%93%9C_%EB%AA%A9%EB%A1%9D
     const textarea2 = document.getElementById('floatingTextarea2');
     textarea2.value = translatedText;
+    console.log(translatedText);
 
     // 번역 기록 추가
-    addTranslationHistory('ko', targetLanguage, translatedText);
+    //addTranslationHistory('ko', targetLanguage, translatedText);
   });
 
 

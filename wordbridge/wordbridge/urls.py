@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-from translator.views import check_email,register,login_view
+from translator.views import check_email,register,login_view, translate
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('translator.urls'),name='translator'),
     path('api/check-userId/<str:userId>/', check_email),
     path('api/register/', register, name='register'),
+    path('api/translator/', translate, name='translate'),
 ]
